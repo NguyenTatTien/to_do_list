@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="ld_activityScreenTitles">
+        <item>Today</item>
+        <item>Personal</item>
+        <item>Group</item>
+        <item>Task</item>
+        <item>Setting</item>
+        <item />
+        <item>Log Out</item>
+    </string-array>
+
+    <array name="ld_activityScreenIcons">
+        <item>@drawable/today</item>
+        <item>@drawable/personal</item>
+        <item>@drawable/group</item>
+        <item>@drawable/task</item>
+        <item>@drawable/setting</item>
+        <item>0</item>
+        <item>@drawable/setting</item>
+    </array>
+
+</resources>

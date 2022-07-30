@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+
+    android:orientation="horizontal"
+
+    android:layout_height="match_parent">
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_marginTop="20dp"
+       android:background="@drawable/custom_layout_task_today"
+       android:layout_height="50dp">
+       <LinearLayout
+           android:layout_width="wrap_content"
+           android:layout_height="match_parent"
+           android:layout_alignParentLeft="true"
+           android:orientation="horizontal">
+           <RadioButton
+               android:id="@+id/check"
+               android:layout_width="wrap_content"
+               android:layout_marginLeft="20dp"
+
+               android:layout_height="match_parent"></RadioButton>
+           <TextView
+               android:id="@+id/name_task_today"
+               android:layout_width="wrap_content"
+
+               android:layout_gravity="center_vertical"
+
+               android:textSize="17dp"
+               android:layout_height="wrap_content"></TextView>
+       </LinearLayout>
+       <TextView
+           android:id="@+id/time_start_task_today"
+           android:layout_width="wrap_content"
+
+           android:gravity="center_vertical"
+           android:textSize="17dp"
+           android:layout_marginRight="20dp"
+           android:layout_alignParentRight="true"
+           android:layout_height="match_parent"></TextView>
+   </RelativeLayout>
+</RelativeLayout>

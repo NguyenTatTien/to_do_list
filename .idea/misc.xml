@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/android/Todo_List/app/src/main/res/drawable/custom_add_task.xml" value="0.21302083333333333" />
+        <entry key="..\:/android/Todo_List/app/src/main/res/drawable/custom_button.xml" value="0.23425925925925925" />
+        <entry key="..\:/android/Todo_List/app/src/main/res/drawable/custom_edit.xml" value="0.23425925925925925" />
+        <entry key="..\:/android/Todo_List/app/src/main/res/drawable/custom_edit_add_group.xml" value="0.22291666666666668" />
+        <entry key="..\:/android/Todo_List/app/src/main/res/drawable/custom_layout_task_today.xml" value="0.24871794871794872" />
+        <entry key="..\:/android/Todo_List/app/src/main/res/drawable/custom_list_task_today.xml" value="0.2526041666666667" />
+        <entry key="..\:/android/Todo_List/app/src/main/res/drawable/custom_login_google.xml" value="0.2526041666666667" />
+        <entry key="..\:/android/Todo_List/app/src/main/res/drawable/custom_login_main.xml" value="0.2526041666666667" />
+        <entry key="..\:/android/Todo_List/app/src/main/res/drawable/custom_sign_up_main.xml" value="0.2526041666666667" />
+        <entry key="..\:/android/Todo_List/app/src/main/res/layout/activity_add_group.xml" value="0.20677083333333332" />
+        <entry key="..\:/android/Todo_List/app/src/main/res/layout/activity_login.xml" value="0.176" />
+        <entry key="..\:/android/Todo_List/app/src/main/res/layout/activity_main.xml" value="0.23645833333333333" />
+        <entry key="..\:/android/Todo_List/app/src/main/res/layout/activity_main_login.xml" value="0.23645833333333333" />
+        <entry key="..\:/android/Todo_List/app/src/main/res/layout/activity_main_to_do.xml" value="0.23645833333333333" />
+        <entry key="..\:/android/Todo_List/app/src/main/res/layout/activity_sign_up.xml" value="0.23645833333333333" />
+        <entry key="..\:/android/Todo_List/app/src/main/res/layout/custom_grid_group.xml" value="0.23645833333333333" />
+        <entry key="..\:/android/Todo_List/app/src/main/res/layout/custom_list_group.xml" value="0.23645833333333333" />
+        <entry key="..\:/android/Todo_List/app/src/main/res/layout/custom_list_task_today.xml" value="0.13516483516483516" />
+        <entry key="..\:/android/Todo_List/app/src/main/res/layout/custom_list_view.xml" value="0.23645833333333333" />
+        <entry key="..\:/android/Todo_List/app/src/main/res/layout/custom_list_view_navigtion.xml" value="0.23645833333333333" />
+        <entry key="..\:/android/Todo_List/app/src/main/res/layout/fragment_group__task_.xml" value="0.23645833333333333" />
+        <entry key="..\:/android/Todo_List/app/src/main/res/layout/fragment_list__task_.xml" value="0.23645833333333333" />
+        <entry key="..\:/android/Todo_List/app/src/main/res/layout/fragment_personal__task_.xml" value="0.23645833333333333" />
+        <entry key="..\:/android/Todo_List/app/src/main/res/layout/fragment_today__task_.xml" value="0.23645833333333333" />
+        <entry key="..\:/android/Todo_List/app/src/main/res/layout/header_navigation.xml" value="0.23645833333333333" />
+        <entry key="..\:/android/Todo_List/app/src/main/res/layout/menu_navigation.xml" value="0.23645833333333333" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

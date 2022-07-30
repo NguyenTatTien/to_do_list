@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "996891091291",
+    "firebase_url": "https://todol-e5e7b-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "todol-e5e7b",
+    "storage_bucket": "todol-e5e7b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:996891091291:android:ab473b163d8eea8c837a7e",
+        "android_client_info": {
+          "package_name": "com.example.todo_list"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "996891091291-qdgdjcvfn3sv5h4e3dticnn0shikm8ac.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgE40riYZc5HGRwfm73TZgpvkcLvdyzso"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "996891091291-qdgdjcvfn3sv5h4e3dticnn0shikm8ac.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
