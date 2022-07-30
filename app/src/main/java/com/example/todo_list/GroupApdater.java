@@ -39,7 +39,7 @@ public class GroupApdater extends ArrayAdapter<Group> {
         ProgressBar progressBar = convertView.findViewById(R.id.progressBar_group);
         TextView numberbar = convertView.findViewById(R.id.number_pbar_group);
         name.setText(groups.get(position).Name);
-        member.setText("Thành viên:"+0);
+        member.setText("Thành viên:"+groups.get(position).getMember().size());
         progressBar.setProgress(50);
         numberbar.setText("50%");
 

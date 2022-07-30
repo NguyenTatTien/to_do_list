@@ -1,37 +1,22 @@
 package com.example.todo_list;
 
+import java.util.List;
+
 public class MemberGroup {
-    int id;
-    int idGroup;
-    int idUser;
+    User member;
+    List<Task> task;
 
-    public MemberGroup(int id, int idGroup, int idUser) {
-        this.id = id;
-        this.idGroup = idGroup;
-        this.idUser = idUser;
+    public MemberGroup(){}
+    public MemberGroup(User member, List<Task> task) {
+        this.member = member;
+        this.task = task;
     }
 
-    public int getId() {
-        return id;
+    public List<Task> getTaskList() {
+        return task;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getIdGroup() {
-        return idGroup;
-    }
-
-    public void setIdGroup(int idGroup) {
-        this.idGroup = idGroup;
-    }
-
-    public int getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
+    public void setTaskList(List<Task> taskList) {
+        this.task = taskList;
     }
 }

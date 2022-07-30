@@ -6,12 +6,15 @@ public class Group {
     String Id;
     String Name;
     User Admin;
+    List<MemberGroup> member;
 
     public Group(){}
-    public Group(String id, String name, User admin) {
-        this.Id = id;
-        this.Name = name;
-        this.Admin = admin;
+
+    public Group(String id, String name, User admin, List<MemberGroup> member) {
+        Id = id;
+        Name = name;
+        Admin = admin;
+        this.member = member;
     }
 
     public String getId() {
@@ -19,7 +22,7 @@ public class Group {
     }
 
     public void setId(String id) {
-        this.Id = id;
+        Id = id;
     }
 
     public String getName() {
@@ -27,7 +30,7 @@ public class Group {
     }
 
     public void setName(String name) {
-        this.Name = name;
+        Name = name;
     }
 
     public User getAdmin() {
@@ -35,6 +38,14 @@ public class Group {
     }
 
     public void setAdmin(User admin) {
-        this.Admin = admin;
+        Admin = admin;
+    }
+
+    public List<MemberGroup> getMember() {
+        return member;
+    }
+
+    public void setMember(List<MemberGroup> member) {
+        this.member = member;
     }
 }

@@ -75,10 +75,10 @@ public class Sign_Up extends AppCompatActivity {
                                    id +=snapshot.getChildrenCount();
                                    User user = new User("lll",edUser.getText().toString(),edEmail.getText().toString(),edPassword.getText().toString());
                                    DatabaseReference reference =  myRef.push();
-                                   reference.child("Id").setValue(reference.getKey());
-                                   reference.child("Name").setValue(user.getName());
-                                   reference.child("Email").setValue(user.getEmail());
-                                   reference.child("Password").setValue(user.getPassword());
+                                   reference.child("id").setValue(reference.getKey());
+                                   reference.child("name").setValue(user.getName());
+                                   reference.child("email").setValue(user.getEmail());
+                                   reference.child("password").setValue(user.getPassword());
 
                                    Toast.makeText(Sign_Up.this,"Add user",Toast.LENGTH_LONG).show();
                                }

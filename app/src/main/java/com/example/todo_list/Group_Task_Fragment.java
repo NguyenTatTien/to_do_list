@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,7 @@ public class Group_Task_Fragment extends Fragment {
     User user;
     EditText name_group;
     GroupApdater groupApdater;
+    ListView listView;
     public Group_Task_Fragment(User user) {
         // Required empty public constructor
         this.user = user;
@@ -78,7 +80,7 @@ public class Group_Task_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_group__task_, container, false);
-        ListView listView = view.findViewById(R.id.list_group);
+        listView = view.findViewById(R.id.list_group);
         ImageButton add_group = view.findViewById(R.id.add_group);
         name_group = view.findViewById(R.id.add_name_group);
         groups = new ArrayList<>();
@@ -90,8 +92,7 @@ public class Group_Task_Fragment extends Fragment {
             }
         });
 
-        groupApdater = new GroupApdater(this.getContext(),R.layout.custom_list_group,groups);
-        listView.setAdapter(groupApdater);
+       setAdapter();
         // Inflate the layout for this fragment
         return view;
     }
@@ -102,8 +103,23 @@ public class Group_Task_Fragment extends Fragment {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myRef = database.getReference("Group");
             DatabaseReference groupRef = myRef.push();
-            Group group = new Group(groupRef.getKey(),name_group.getText().toString(),user);
-            groupRef.setValue(group);
+            List<Task> tasks = new ArrayList<>();
+            List<MemberGroup> memberGroups = new ArrayList<>();
+            memberGroups.add(new MemberGroup(user,tasks));
+            Group group = new Group(groupRef.getKey(),name_group.getText().toString(),user,memberGroups);
+            groupRef.child("id").setValue(group.getId());
+            groupRef.child("name").setValue(group.getName());
+            groupRef.child("admin").setValue(user);
+            DatabaseReference memberRef = groupRef.child("member");
+            for (MemberGroup memberGroup: memberGroups) {
+                Log.e("for",memberGroups.get(0).member.getId());
+                memberRef.child(memberGroup.member.getId()).setValue(memberGroup.member);
+                DatabaseReference taskRef = groupRef.child(memberGroup.member.getId());
+                DatabaseReference childtask = taskRef.child("task");
+                for (Task task:memberGroup.getTaskList()) {
+                    childtask.setValue(task);
+                }
+            }
             LoadGroup();
         }
 
@@ -135,19 +151,48 @@ public class Group_Task_Fragment extends Fragment {
 
 
     }
+    public void setAdapter(){
+        groupApdater = new GroupApdater(this.getContext(),R.layout.custom_list_group,groups);
+        listView.setAdapter(groupApdater);
+    }
    public void LoadGroup(){
+        groups = new ArrayList<>();
        FirebaseDatabase database = FirebaseDatabase.getInstance();
        DatabaseReference myRef = database.getReference("Group");
-       myRef.addValueEventListener(new ValueEventListener() {
+       myRef.addListenerForSingleValueEvent(new ValueEventListener() {
            @Override
            public void onDataChange(@NonNull DataSnapshot snapshot) {
                for (DataSnapshot snapshotGroup:snapshot.getChildren()) {
-                   Group group = snapshotGroup.getValue(Group.class);
-                   assert group != null;
-                   if(group.Admin.getId().equals(user.getId())){
-                       groups.add(group);
+                   Group gr = new Group();
+                   gr.setId(snapshotGroup.child("id").getValue(String.class));
+                   gr.setName(snapshotGroup.child("name").getValue(String.class));
+                   gr.setAdmin(snapshotGroup.child("admin").getValue(User.class));
+                   DataSnapshot memberData = snapshotGroup.child("member");
+                   List<MemberGroup> memberGroups = new ArrayList<>();
+                   Log.e("bbb",memberData.getChildrenCount()+"");
+                   for (DataSnapshot dataSnapshot: memberData.getChildren()) {
+                           Log.e("bbb",memberData.getChildrenCount()+"");
+                           MemberGroup memberGroup = new MemberGroup(dataSnapshot.getValue(User.class),null);
+                           Log.e("bbb",memberGroup.member.getId());
+                           memberGroups.add(memberGroup);
+
+
                    }
+                   gr.setMember(memberGroups);
+
+
+
+
+
+                 if(gr.Admin!=null){
+                     assert gr != null;
+                     if(gr.Admin.getId().equals(user.getId())){
+                        Log.e("fdsf",gr.Id+" "+gr.member.get(0).member.getId());
+                         groups.add(gr);
+                     }
+                 }
                }
+               setAdapter();
                groupApdater.notifyDataSetChanged();
 
            }
