@@ -73,13 +73,16 @@ public class Sign_Up extends AppCompatActivity {
                                else{
                                    int id = 1123785;
                                    id +=snapshot.getChildrenCount();
-                                   User user = new User("lll",edUser.getText().toString(),edEmail.getText().toString(),edPassword.getText().toString());
+                                   List<Nofication> noficationList = new ArrayList<>();
+                                   UserDetail user = new UserDetail(new User("lll",edUser.getText().toString(),edEmail.getText().toString(),edPassword.getText().toString()),noficationList);
                                    DatabaseReference reference =  myRef.push();
                                    reference.child("id").setValue(reference.getKey());
-                                   reference.child("name").setValue(user.getName());
-                                   reference.child("email").setValue(user.getEmail());
-                                   reference.child("password").setValue(user.getPassword());
-
+                                   reference.child("name").setValue(user.getUser().getName());
+                                   reference.child("email").setValue(user.getUser().getEmail());
+                                   reference.child("password").setValue(user.getUser().getPassword());
+                                   DatabaseReference noficationRef =  reference.child("notification");
+                                   DatabaseReference child = noficationRef.push();
+                                   child.setValue(new Nofication(child.getKey(),"Thông báo","Đăng ký thành công",false));
                                    Toast.makeText(Sign_Up.this,"Add user",Toast.LENGTH_LONG).show();
                                }
 

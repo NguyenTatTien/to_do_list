@@ -1,27 +1,42 @@
 package com.example.todo_list;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,6 +55,7 @@ public class Group_Task_Fragment extends Fragment {
     private String mParam1;
     private String mParam2;
     List<Group> groups;
+
     User user;
     EditText name_group;
     GroupApdater groupApdater;
@@ -79,11 +95,12 @@ public class Group_Task_Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_group__task_, container, false);
-        listView = view.findViewById(R.id.list_group);
-        ImageButton add_group = view.findViewById(R.id.add_group);
-        name_group = view.findViewById(R.id.add_name_group);
+        View contextView =  inflater.inflate(R.layout.fragment_group__task_, container, false);
+        listView = contextView.findViewById(R.id.list_group);
+        ImageButton add_group = contextView.findViewById(R.id.add_group);
+        name_group = contextView.findViewById(R.id.add_name_group);
         groups = new ArrayList<>();
+
         LoadGroup();
         add_group.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,9 +109,32 @@ public class Group_Task_Fragment extends Fragment {
             }
         });
 
-       setAdapter();
+
+       listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+           @Override
+           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               Intent intent = new Intent(getContext(),MemberActivity.class);
+               intent.putExtra("groupId",groups.get(position).getId());
+               intent.putExtra("user",(Serializable) user);
+               startActivity(intent);
+           }
+       });
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Group");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                LoadGroup();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         // Inflate the layout for this fragment
-        return view;
+        return contextView;
     }
     private void AddGroup(){
         if(name_group.getText().toString().equals("")){
@@ -152,16 +192,22 @@ public class Group_Task_Fragment extends Fragment {
 
     }
     public void setAdapter(){
+
         groupApdater = new GroupApdater(this.getContext(),R.layout.custom_list_group,groups);
         listView.setAdapter(groupApdater);
+        Log.e("",groups.size()+"");
+
+
+
     }
    public void LoadGroup(){
-        groups = new ArrayList<>();
+
        FirebaseDatabase database = FirebaseDatabase.getInstance();
        DatabaseReference myRef = database.getReference("Group");
        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
            @Override
            public void onDataChange(@NonNull DataSnapshot snapshot) {
+               groups = new ArrayList<>();
                for (DataSnapshot snapshotGroup:snapshot.getChildren()) {
                    Group gr = new Group();
                    gr.setId(snapshotGroup.child("id").getValue(String.class));
@@ -169,28 +215,23 @@ public class Group_Task_Fragment extends Fragment {
                    gr.setAdmin(snapshotGroup.child("admin").getValue(User.class));
                    DataSnapshot memberData = snapshotGroup.child("member");
                    List<MemberGroup> memberGroups = new ArrayList<>();
-                   Log.e("bbb",memberData.getChildrenCount()+"");
+                    boolean kt = false;
                    for (DataSnapshot dataSnapshot: memberData.getChildren()) {
-                           Log.e("bbb",memberData.getChildrenCount()+"");
-                           MemberGroup memberGroup = new MemberGroup(dataSnapshot.getValue(User.class),null);
-                           Log.e("bbb",memberGroup.member.getId());
-                           memberGroups.add(memberGroup);
 
+                           MemberGroup memberGroup = new MemberGroup(dataSnapshot.getValue(User.class),null);
+
+                           memberGroups.add(memberGroup);
+                           if(memberGroup.member.getId().equals(user.getId())){
+                               kt = true;
+                           }
 
                    }
                    gr.setMember(memberGroups);
 
 
-
-
-
-                 if(gr.Admin!=null){
-                     assert gr != null;
-                     if(gr.Admin.getId().equals(user.getId())){
-                        Log.e("fdsf",gr.Id+" "+gr.member.get(0).member.getId());
-                         groups.add(gr);
-                     }
-                 }
+                   if(kt){
+                       groups.add(gr);
+                   }
                }
                setAdapter();
                groupApdater.notifyDataSetChanged();
@@ -202,5 +243,29 @@ public class Group_Task_Fragment extends Fragment {
 
            }
        });
+
+    }
+
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        getActivity().getMenuInflater().inflate(R.menu.menu_group,menu);
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        AdapterView.AdapterContextMenuInfo i = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()){
+            case R.id.menu_member:
+                Intent intent = new Intent(getContext(),MemberActivity.class);
+                intent.putExtra("groupId",groups.get(i.position).getId());
+                intent.putExtra("user",(Serializable) user);
+                startActivity(intent);
+                break;
+            case R.id.menu_task:
+                break;
+        }
+        return super.onContextItemSelected(item);
     }
 }

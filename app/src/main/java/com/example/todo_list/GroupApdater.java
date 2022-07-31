@@ -42,9 +42,6 @@ public class GroupApdater extends ArrayAdapter<Group> {
         member.setText("Thành viên:"+groups.get(position).getMember().size());
         progressBar.setProgress(50);
         numberbar.setText("50%");
-
-
-
         return convertView;
     }
 }

@@ -1,14 +1,21 @@
 package com.example.todo_list;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class User implements Serializable {
     private String id;
     private String  name;
     private String email;
     private String password;
-    public User(){
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
+
+    public User(){
     }
 
     public User(String id, String name, String email, String passwrod) {
@@ -16,6 +23,7 @@ public class User implements Serializable {
         this.name = name;
         this.email = email;
         this.password = passwrod;
+
     }
 
     public String getId() {

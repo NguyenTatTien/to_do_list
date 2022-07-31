@@ -53,7 +53,7 @@
              android:layout_marginRight="80dp"></EditText>
          <ImageButton
              android:id="@+id/add_group"
-             android:src="@drawable/ic_baseline_add_24"
+             android:src="@drawable/ic_white_add_24"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:background="@drawable/custom_add_task"
