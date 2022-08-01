@@ -1,30 +1,41 @@
 package com.example.todo_list;
 
 
+import java.util.List;
 
 public class Task {
-    private int id;
+    private String id;
     private String name;
     private boolean check;
     private String StartTime;
     private String EndTime;
     private String Remind;
+   // private List<SubTask> subTasks;
  public Task(){
  }
-    public Task(int id, String name, boolean check, String startTime, String endTime, String remind) {
+    public Task(String id, String name, boolean check, String startTime, String endTime, String remind) {
         this.id = id;
         this.name = name;
         this.check = check;
         StartTime = startTime;
         EndTime = endTime;
         Remind = remind;
+
     }
 
-    public int getId() {
+//    public List<SubTask> getSubTasks() {
+//        return subTasks;
+//    }
+//
+//    public void setSubTasks(List<SubTask> subTasks) {
+//        this.subTasks = subTasks;
+//    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

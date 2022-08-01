@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Add_Task">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginRight="50dp"
+        android:layout_marginLeft="50dp"
+        android:gravity="center">
+        <EditText
+            android:id="@+id/new_name_task"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Name"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Day end:"
+                android:textStyle="bold"
+                android:textSize="18dp"/>
+            <TextView
+                android:id="@+id/day_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="xx/yy/mmmm"
+                android:textSize="18dp"/>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Time end:"
+                android:textStyle="bold"
+                android:textSize="18dp"/>
+            <TextView
+                android:id="@+id/time_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:layout_marginLeft="10dp"
+                android:textSize="18dp"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Day remind:"
+                android:textStyle="bold"
+                android:textSize="18dp"/>
+            <TextView
+                android:id="@+id/day_remind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="xx/yy/mmmm"
+                android:layout_marginLeft="10dp"
+                android:textSize="18dp"/>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Time remind:"
+                android:textStyle="bold"
+                android:textSize="18dp"/>
+            <TextView
+                android:id="@+id/time_remind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:layout_marginLeft="10dp"
+                android:textSize="18dp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+    <ImageButton
+        android:id="@+id/add_new_task_group"
+        android:src="@drawable/ic_white_add_24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_add_task"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="40dp"
+        android:layout_marginRight="30dp"></ImageButton>
+</RelativeLayout>

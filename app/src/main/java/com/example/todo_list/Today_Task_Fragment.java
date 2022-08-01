@@ -78,9 +78,9 @@ public class Today_Task_Fragment extends Fragment {
 
 //        nt id, String name, boolean check, TimeZone startTime, java.util.TimeZone
 //        endTime, java.util.TimeZone remind
-        tasks.add(new Task(1,"Đi học",false,"7:00","10:30","6:45"));
-        tasks.add(new Task(2,"Học bài",false,"19:00","20:00","18:45"));
-        tasks.add(new Task(3,"Chơi game",false,"20:00","21:00","19:45"));
-        tasks.add(new Task(4,"Làm việc",false,"21:00","23:00","20:45"));
+        tasks.add(new Task("1","Đi học",false,"7:00","10:30","6:45"));
+        tasks.add(new Task("2","Học bài",false,"19:00","20:00","18:45"));
+        tasks.add(new Task("3","Chơi game",false,"20:00","21:00","19:45"));
+        tasks.add(new Task("4","Làm việc",false,"21:00","23:00","20:45"));
     }
 }

@@ -108,7 +108,7 @@ public class Group_Task_Fragment extends Fragment {
                 AddGroup();
             }
         });
-
+        registerForContextMenu(listView);
 
        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
            @Override
@@ -144,21 +144,21 @@ public class Group_Task_Fragment extends Fragment {
             DatabaseReference myRef = database.getReference("Group");
             DatabaseReference groupRef = myRef.push();
             List<Task> tasks = new ArrayList<>();
-            List<MemberGroup> memberGroups = new ArrayList<>();
-            memberGroups.add(new MemberGroup(user,tasks));
-            Group group = new Group(groupRef.getKey(),name_group.getText().toString(),user,memberGroups);
+            List<User> memberGroups = new ArrayList<>();
+            memberGroups.add(user);
+            Group group = new Group(groupRef.getKey(),name_group.getText().toString(),user,memberGroups,tasks);
             groupRef.child("id").setValue(group.getId());
             groupRef.child("name").setValue(group.getName());
             groupRef.child("admin").setValue(user);
             DatabaseReference memberRef = groupRef.child("member");
-            for (MemberGroup memberGroup: memberGroups) {
-                Log.e("for",memberGroups.get(0).member.getId());
-                memberRef.child(memberGroup.member.getId()).setValue(memberGroup.member);
-                DatabaseReference taskRef = groupRef.child(memberGroup.member.getId());
-                DatabaseReference childtask = taskRef.child("task");
-                for (Task task:memberGroup.getTaskList()) {
-                    childtask.setValue(task);
-                }
+            for (User member: memberGroups) {
+
+                memberRef.child(member.getId()).setValue(member);
+
+            }
+            DatabaseReference taskRef = groupRef.child("task");
+            for (Task task:tasks) {
+                taskRef.setValue(task);
             }
             LoadGroup();
         }
@@ -214,14 +214,14 @@ public class Group_Task_Fragment extends Fragment {
                    gr.setName(snapshotGroup.child("name").getValue(String.class));
                    gr.setAdmin(snapshotGroup.child("admin").getValue(User.class));
                    DataSnapshot memberData = snapshotGroup.child("member");
-                   List<MemberGroup> memberGroups = new ArrayList<>();
+                   List<User> memberGroups = new ArrayList<>();
                     boolean kt = false;
                    for (DataSnapshot dataSnapshot: memberData.getChildren()) {
 
-                           MemberGroup memberGroup = new MemberGroup(dataSnapshot.getValue(User.class),null);
+                           User memberGroup = dataSnapshot.getValue(User.class);
 
                            memberGroups.add(memberGroup);
-                           if(memberGroup.member.getId().equals(user.getId())){
+                           if(memberGroup.getId().equals(user.getId())){
                                kt = true;
                            }
 
@@ -264,7 +264,11 @@ public class Group_Task_Fragment extends Fragment {
                 startActivity(intent);
                 break;
             case R.id.menu_task:
-                break;
+                Intent intent1 = new Intent(getContext(),Task_Group.class);
+                intent1.putExtra("groupId",groups.get(i.position).getId());
+                intent1.putExtra("user",(Serializable) user);
+                startActivity(intent1);
+
         }
         return super.onContextItemSelected(item);
     }

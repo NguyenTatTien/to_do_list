@@ -18,7 +18,7 @@ import androidx.annotation.Nullable;
 import java.sql.Struct;
 import java.util.List;
 
-public class Task_Todo_Adapter extends ArrayAdapter<MenuNavigation> {
+public class Task_Todo_Adapter extends ArrayAdapter<Task> {
     private Context context;
     private int resource;
     List<Task> tasks;

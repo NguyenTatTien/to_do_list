@@ -1,9 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Task_Group">
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:orientation="vertical"
+       android:layout_height="match_parent">
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:gravity="center_vertical"
+           android:orientation="vertical"
+           android:background="@drawable/custom_layout_member"
+           android:layout_height="250dp">
+           <TextView
+               android:id="@+id/task_name_group"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginLeft="20dp"
+               android:textSize="25dp"
+               android:textColor="@color/white"
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+               android:text="Group"></TextView>
+           <TextView
+               android:id="@+id/task_member_group"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginLeft="20dp"
+               android:textSize="18dp"
+               android:textColor="@color/white"
+
+               android:text="Member"></TextView>
+
+           <ProgressBar
+               android:id="@+id/task_pro_group"
+               android:layout_marginRight="20dp"
+               android:layout_marginLeft="20dp"
+               android:layout_marginTop="5dp"
+               style="?android:attr/progressBarStyleHorizontal"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" />
+       </LinearLayout>
+       <TextView
+           android:layout_marginTop="40dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="Task List"
+           android:textColor="#535252"
+           android:textSize="18dp"
+           android:textStyle="bold"
+           android:layout_marginLeft="25dp"></TextView>
+       <ListView
+           android:id="@+id/list_task_group"
+           android:layout_marginTop="20dp"
+           android:layout_width="match_parent"
+           android:dividerHeight="0dp"
+           android:divider="@null"
+           android:layout_height="match_parent"></ListView>
+   </LinearLayout>
+    <ImageButton
+        android:id="@+id/add_task_group"
+        android:src="@drawable/ic_white_add_24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_add_task"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="40dp"
+        android:layout_marginRight="30dp"></ImageButton>
+</RelativeLayout>

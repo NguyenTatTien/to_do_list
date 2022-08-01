@@ -91,34 +91,11 @@ public class MemberActivity extends AppCompatActivity {
 
             }
         });
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("User").child(userLogin.getId()).child("notification");
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(newMember!=null){
-                    if(newMember.getId().equals(userLogin.getId())){
-                        for(DataSnapshot snapshot1:snapshot.getChildren()){
-                            Nofication nofication = snapshot1.getValue(Nofication.class);
-                            assert nofication != null;
-                            if(!nofication.isStatus()){
-                                showNofication(nofication);
-                            }
-                        }
-                    }
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
 
     }
-    public void showNofication(Nofication nofication){
 
-    }
     public void sendNofication(String groupId){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 

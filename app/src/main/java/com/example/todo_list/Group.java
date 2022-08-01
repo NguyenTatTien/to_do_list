@@ -6,15 +6,24 @@ public class Group {
     String Id;
     String Name;
     User Admin;
-    List<MemberGroup> member;
-
+    List<User> member;
+    List<Task> tasks;
     public Group(){}
 
-    public Group(String id, String name, User admin, List<MemberGroup> member) {
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
+    public Group(String id, String name, User admin, List<User> member, List<Task> tasks) {
         Id = id;
         Name = name;
         Admin = admin;
         this.member = member;
+        this.tasks = tasks;
     }
 
     public String getId() {
@@ -41,11 +50,11 @@ public class Group {
         Admin = admin;
     }
 
-    public List<MemberGroup> getMember() {
+    public List<User> getMember() {
         return member;
     }
 
-    public void setMember(List<MemberGroup> member) {
+    public void setMember(List<User> member) {
         this.member = member;
     }
 }

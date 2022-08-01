@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Todo_List">
         <activity
+            android:name=".Add_Task"
+            android:exported="false" />
+        <activity
             android:name=".Task_Group"
             android:exported="false" />
         <activity
