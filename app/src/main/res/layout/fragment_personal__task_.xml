@@ -3,14 +3,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EFEEEE"
     tools:context=".Personal_Task_Fragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:textSize="20dp"
-        android:text="Personal" />
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="22dp"
+                android:layout_margin="20dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:text="Personal's task"></TextView>
+
+            <ListView
+                android:id="@+id/list_task_personal"
+                android:layout_width="match_parent"
+                android:dividerHeight="0dp"
+                android:divider="@null"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"></ListView>
+
+        </LinearLayout>
+        <ImageButton
+            android:id="@+id/add_task_personal"
+            android:src="@drawable/ic_white_add_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_add_task"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="40dp"
+            android:layout_marginRight="30dp"></ImageButton>
+    </RelativeLayout>
 
 </FrameLayout>

@@ -40,7 +40,8 @@ public class Task_Group extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Task_Group.this,Add_Task.class);
-                intent.putExtra("groupId",groupId);
+                intent.putExtra("data","group");
+                intent.putExtra("id",groupId);
                 startActivity(intent);
             }
         });
@@ -52,9 +53,7 @@ public class Task_Group extends AppCompatActivity {
         listView.setAdapter(task_todo_adapter);
 
     }
-    public  void addTask(){
 
-    }
     public void loadTask(){
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();

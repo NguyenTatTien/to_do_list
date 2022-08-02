@@ -44,7 +44,7 @@ public class Add_Task extends AppCompatActivity {
     LocalDateTime date;
     TextView DateEnd,TimeEnd,DateRemind,TimeRemind;
     ImageButton add_task;
-    String groupId;
+    String id;
     EditText nameTask;
     List<User> members;
     AlarmManager alarmManager;
@@ -62,7 +62,8 @@ public class Add_Task extends AppCompatActivity {
         nameTask = findViewById(R.id.new_name_task);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = getIntent();
-        groupId = intent.getStringExtra("groupId");
+        String strObject = intent.getStringExtra("data");
+        id = intent.getStringExtra("id");
         date = LocalDateTime.now();
         members = new ArrayList<>();
         DateEnd.setOnClickListener(new View.OnClickListener() {
@@ -93,16 +94,43 @@ public class Add_Task extends AppCompatActivity {
         add_task.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addTask();
+                if(strObject.equals("personal")){
+                    Log.e("user","presonal");
+                    addTask("User");
+                }
+                else {
+                    Log.e("group","group");
+                    addTask("Group");
+
+                }
+
             }
         });
         sendNotification();
 
     }
+//    public void addTaskPersonal(){
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference myRef = database.getReference("User").child(id).child("task");
+//        DatabaseReference taskRef = myRef.push();
+//        final Calendar calendar = Calendar.getInstance();
+//        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+//
+//        String timeStart = formatter.format(calendar.getTime());
+//        if (nameTask.getText().equals("")) {
+//            Toast.makeText(Add_Task.this, "Please enter name task", Toast.LENGTH_LONG).show();
+//        } else {
+//            sendNotification();
+//            Task task = new Task(taskRef.getKey(), nameTask.getText().toString(), false, timeStart, DateEnd.getText().toString() + " " + TimeEnd.getText().toString(), DateRemind.getText().toString() + " " + TimeRemind.getText().toString());
+//            taskRef.setValue(task);
+//
+//
+//        }
+//    }
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void addTask() {
+    public void addTask(String name) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("Group").child(groupId).child("task");
+        DatabaseReference myRef = database.getReference(name).child(id).child("task");
         DatabaseReference taskRef = myRef.push();
         final Calendar calendar = Calendar.getInstance();
         SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
@@ -114,8 +142,6 @@ public class Add_Task extends AppCompatActivity {
             sendNotification();
             Task task = new Task(taskRef.getKey(), nameTask.getText().toString(), false, timeStart, DateEnd.getText().toString() + " " + TimeEnd.getText().toString(), DateRemind.getText().toString() + " " + TimeRemind.getText().toString());
             taskRef.setValue(task);
-            runServices(task);
-
         }
     }
     public void sendNotification(){
@@ -125,8 +151,7 @@ public class Add_Task extends AppCompatActivity {
        myRef.addValueEventListener(new ValueEventListener() {
            @Override
            public void onDataChange(@NonNull DataSnapshot snapshot) {
-               DataSnapshot snapshot1 = snapshot.child(groupId).child("member");
-               Log.e("ffds","fsdfsdfsdfdsfsdsdfds");
+               DataSnapshot snapshot1 = snapshot.child(id).child("member");
                members = new ArrayList<>();
                for (DataSnapshot snapMember: snapshot1.getChildren()) {
                    User member = snapMember.getValue(User.class);

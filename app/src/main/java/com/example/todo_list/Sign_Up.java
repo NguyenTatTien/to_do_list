@@ -74,7 +74,7 @@ public class Sign_Up extends AppCompatActivity {
                                    int id = 1123785;
                                    id +=snapshot.getChildrenCount();
                                    List<Nofication> noficationList = new ArrayList<>();
-                                   UserDetail user = new UserDetail(new User("lll",edUser.getText().toString(),edEmail.getText().toString(),edPassword.getText().toString()),noficationList);
+                                   UserDetail user = new UserDetail(new User("lll",edUser.getText().toString(),edEmail.getText().toString(),edPassword.getText().toString()),noficationList,null);
                                    DatabaseReference reference =  myRef.push();
                                    reference.child("id").setValue(reference.getKey());
                                    reference.child("name").setValue(user.getUser().getName());
