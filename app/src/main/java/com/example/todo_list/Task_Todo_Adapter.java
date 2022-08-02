@@ -15,6 +15,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.sql.Struct;
 import java.util.List;
 
@@ -22,11 +25,13 @@ public class Task_Todo_Adapter extends ArrayAdapter<Task> {
     private Context context;
     private int resource;
     List<Task> tasks;
-    public Task_Todo_Adapter(@NonNull Context context, int resource, List<Task> tasks) {
+    String groupId;
+    public Task_Todo_Adapter(@NonNull Context context, int resource, List<Task> tasks,String groupId) {
         super(context, resource);
         this.context = context;
         this.resource = resource;
         this.tasks = tasks;
+        this.groupId = groupId;
 
     }
     @Override
@@ -50,14 +55,23 @@ public class Task_Todo_Adapter extends ArrayAdapter<Task> {
             @Override
             public void onClick(View v) {
                 if(!tasks.get(position).isCheck()){
-                    String text = "<strike>+"+name_task.getText().toString()+"</strike>";
-                    name_task.setText(Html.fromHtml(text));
                     tasks.get(position).setCheck(true);
+                    radioButton.setChecked(true);
+                    name_task.setPaintFlags(name_task.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference("Group").child(groupId).child("task").child(task.getId());
+                    myRef.child("check").setValue(true);
                 }
                 else{
                     tasks.get(position).setCheck(false);
+                    radioButton.setChecked(false);
+                    name_task.setPaintFlags(name_task.getPaintFlags()& (~Paint.STRIKE_THRU_TEXT_FLAG));
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference("Group").child(groupId).child("task").child(task.getId());
+                    myRef.child("check").setValue(false);
+
                 }
-                notifyDataSetChanged();
+
             }
         });
         return convertView;

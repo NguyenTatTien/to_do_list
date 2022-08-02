@@ -1,5 +1,6 @@
 package com.example.todo_list;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -7,10 +8,12 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 
@@ -34,8 +37,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -55,11 +62,11 @@ public class Group_Task_Fragment extends Fragment {
     private String mParam1;
     private String mParam2;
     List<Group> groups;
-
     User user;
     EditText name_group;
     GroupApdater groupApdater;
     ListView listView;
+
     public Group_Task_Fragment(User user) {
         // Required empty public constructor
         this.user = user;
@@ -191,20 +198,35 @@ public class Group_Task_Fragment extends Fragment {
 
 
     }
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void setAdapter(){
 
         groupApdater = new GroupApdater(this.getContext(),R.layout.custom_list_group,groups);
         listView.setAdapter(groupApdater);
         Log.e("",groups.size()+"");
+        callServices(groups);
 
 
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void callServices(List<Group> new_groups){
 
+        final Intent intent = new Intent(getContext(),BroadRececiver.class);
+        List<String> listGroupId = new ArrayList<>();
+        for (Group group: new_groups) {
+            listGroupId.add(group.getId());
+        }
+     //   runServices(listGroupId);
+//        intent.putExtra("listGroupId",(Serializable) listGroupId);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+//        alarmManager.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),pendingIntent);
     }
    public void LoadGroup(){
 
        FirebaseDatabase database = FirebaseDatabase.getInstance();
        DatabaseReference myRef = database.getReference("Group");
        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+           @RequiresApi(api = Build.VERSION_CODES.O)
            @Override
            public void onDataChange(@NonNull DataSnapshot snapshot) {
                groups = new ArrayList<>();
@@ -227,7 +249,17 @@ public class Group_Task_Fragment extends Fragment {
 
                    }
                    gr.setMember(memberGroups);
+                   DataSnapshot taskSnap = snapshotGroup.child("task");
+                   List<Task> tasks = new ArrayList<>();
+                   for (DataSnapshot dataSnapshot: taskSnap.getChildren()) {
 
+                       Task task = dataSnapshot.getValue(Task.class);
+
+                       tasks.add(task);
+
+
+                   }
+                   gr.setTasks(tasks);
 
                    if(kt){
                        groups.add(gr);
@@ -245,6 +277,7 @@ public class Group_Task_Fragment extends Fragment {
        });
 
     }
+
 
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {

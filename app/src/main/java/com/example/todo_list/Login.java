@@ -1,15 +1,18 @@
 package com.example.todo_list;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -25,13 +28,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class Login extends AppCompatActivity {
 
     Button btnLogin;
     EditText email,password;
+    AlarmManager alarmManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +49,7 @@ public class Login extends AppCompatActivity {
         email = findViewById(R.id.email_login);
         password = findViewById(R.id.pasword_login);
         UserDetail userDetail= new UserDetail();
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,7 +78,7 @@ public class Login extends AppCompatActivity {
                                 Intent intent = new Intent(Login.this,Main__ToDo.class);
                                 intent.putExtra("user", (Serializable) user);
                                 startActivity(intent);
-
+                                runServices(user);
                                 break;
                             }
                         }
@@ -76,6 +86,7 @@ public class Login extends AppCompatActivity {
                         if(!kt){
                             Toast.makeText(Login.this,"Account already exists!",Toast.LENGTH_LONG).show();
                         }
+
 
 
                     }
@@ -105,6 +116,80 @@ public class Login extends AppCompatActivity {
         });
 
 
+
+    }
+    public void runServices(User user){
+        Log.e("login","ffdsfsdfsd");
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Group");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+                String strDate = "";
+                Date dateTask = null;
+                List<AlarmManager> alarmManagers = new ArrayList<>();
+                List<Task> tasks = new ArrayList<>();
+                Date dateNow = Calendar.getInstance().getTime();
+                for (DataSnapshot snap: snapshot.getChildren()) {
+
+                    User getuser = snap.child("member").child(user.getId()).getValue(User.class);
+                    if(getuser!=null){
+                        Log.e("login3","ffdsfsdfsd");
+                        DataSnapshot taskRef = snap.child("task");
+                        for (DataSnapshot snapTask: taskRef.getChildren()) {
+                            Task task = snapTask.getValue(Task.class);
+                            Log.e("login4","ffdsfsdfsd");
+                            if(!task.isCheck()){
+
+                                try {
+                                    strDate = task.getRemind();
+                                    dateTask = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").parse(strDate);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                assert dateTask != null;
+
+                                if(dateNow.toInstant().isBefore(dateTask.toInstant())){
+                                    Log.e("login6","ffdsfsdfsd");
+                                    AlarmManager  alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                                    tasks.add(task);
+                                    alarmManagers.add(alarmManager);
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+                }
+                for (int i = 0;i<tasks.size();i++) {
+
+                    String dayTask = tasks.get(i).getRemind();
+
+                        Date time = null;
+                        try {
+                         time =  new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").parse(strDate);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    Intent intent = new Intent(Login.this,BroadRececiver.class);
+                       // intent.putExtra("listGroupId",(Serializable) listGroupId);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(Login.this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                    assert time != null;
+                    alarmManagers.get(i).set(AlarmManager.RTC_WAKEUP,time.getTime(),pendingIntent);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
     public void loadNofication(UserDetail user){
 

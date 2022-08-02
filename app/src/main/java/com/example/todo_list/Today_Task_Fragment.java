@@ -1,15 +1,31 @@
 package com.example.todo_list;
 
+import android.app.AlarmManager;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.SimpleTimeZone;
 import java.util.TimeZone;
@@ -31,8 +47,9 @@ public class Today_Task_Fragment extends Fragment {
     private String mParam2;
     private Task_Todo_Adapter task_todo_adapter;
     private List<Task> tasks;
-    public Today_Task_Fragment() {
-
+    User user;
+    public Today_Task_Fragment(User user) {
+        this.user = user;
     }
 
     /**
@@ -45,12 +62,12 @@ public class Today_Task_Fragment extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
     public static Today_Task_Fragment newInstance(String param1, String param2) {
-        Today_Task_Fragment fragment = new Today_Task_Fragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+//        Today_Task_Fragment fragment = new Today_Task_Fragment();
+//        Bundle args = new Bundle();
+//        args.putString(ARG_PARAM1, param1);
+//        args.putString(ARG_PARAM2, param2);
+//        fragment.setArguments(args);
+        return null;
     }
 
     @Override
@@ -70,17 +87,46 @@ public class Today_Task_Fragment extends Fragment {
         ListView listView = (ListView) view.findViewById(R.id.list_task_today);
         tasks = new ArrayList<>();
         SetData();
-        task_todo_adapter = new Task_Todo_Adapter(this.getContext(),R.layout.custom_list_task_today,tasks);
+        task_todo_adapter = new Task_Todo_Adapter(this.getContext(),R.layout.custom_list_task_today,tasks,null);
         listView.setAdapter(task_todo_adapter);
         return view;
     }
     private void SetData(){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Group");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot snap: snapshot.getChildren()) {
+                    User getuser = snap.child("member").child(user.getId()).getValue(User.class);
+                    if (getuser != null) {
+                        DataSnapshot taskRef = snap.child("task");
+                        for (DataSnapshot snapTask : taskRef.getChildren()) {
+                            Task task = snapTask.getValue(Task.class);
+//                            Date date = null;
+//                            Date dateTask = null;
+//                            try {
+//                                date = new SimpleDateFormat("dd/MM/yyyy").parse(Calendar.getInstance().getTime().toString());
+//                                dateTask = new SimpleDateFormat("dd/MM/yyyy").parse(task.);
+//                            } catch (ParseException e) {
+//                                e.printStackTrace();
+//                            }
 
-//        nt id, String name, boolean check, TimeZone startTime, java.util.TimeZone
-//        endTime, java.util.TimeZone remind
-        tasks.add(new Task("1","Đi học",false,"7:00","10:30","6:45"));
-        tasks.add(new Task("2","Học bài",false,"19:00","20:00","18:45"));
-        tasks.add(new Task("3","Chơi game",false,"20:00","21:00","19:45"));
-        tasks.add(new Task("4","Làm việc",false,"21:00","23:00","20:45"));
+                            tasks.add(task);
+
+                        }
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 }

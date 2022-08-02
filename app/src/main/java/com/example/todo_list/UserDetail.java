@@ -6,6 +6,7 @@ public class UserDetail {
     User user;
     List<Nofication> noficationList;
 
+
     public UserDetail(){}
     public UserDetail(User user, List<Nofication> noficationList) {
         this.user = user;

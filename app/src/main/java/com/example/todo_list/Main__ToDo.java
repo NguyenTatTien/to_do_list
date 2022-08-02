@@ -65,7 +65,7 @@ public class Main__ToDo extends AppCompatActivity {
         user = (User) intent.getSerializableExtra("user");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         group_task_fragment = new Group_Task_Fragment(user);
-        today_task_fragment = new Today_Task_Fragment();
+        today_task_fragment = new Today_Task_Fragment(user);
         personal_task_fragment = new Personal_Task_Fragment();
         all_task_fragment = new All_Task_Fragment();
         fragments = new ArrayList<>();

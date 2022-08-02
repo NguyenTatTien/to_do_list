@@ -48,7 +48,7 @@ public class Task_Group extends AppCompatActivity {
     }
     public void setAdapter(){
 
-        task_todo_adapter = new Task_Todo_Adapter(this,R.layout.custom_list_task_today,tasks);
+        task_todo_adapter = new Task_Todo_Adapter(this,R.layout.custom_list_task_today,tasks,groupId);
         listView.setAdapter(task_todo_adapter);
 
     }

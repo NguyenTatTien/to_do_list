@@ -5,7 +5,9 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Build;
@@ -26,6 +28,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -43,6 +47,8 @@ public class Add_Task extends AppCompatActivity {
     String groupId;
     EditText nameTask;
     List<User> members;
+    AlarmManager alarmManager;
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +60,7 @@ public class Add_Task extends AppCompatActivity {
         TimeRemind = findViewById(R.id.time_remind);
         add_task = findViewById(R.id.add_new_task_group);
         nameTask = findViewById(R.id.new_name_task);
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = getIntent();
         groupId = intent.getStringExtra("groupId");
         date = LocalDateTime.now();
@@ -98,14 +105,16 @@ public class Add_Task extends AppCompatActivity {
         DatabaseReference myRef = database.getReference("Group").child(groupId).child("task");
         DatabaseReference taskRef = myRef.push();
         final Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
         String timeStart = formatter.format(calendar.getTime());
         if (nameTask.getText().equals("")) {
             Toast.makeText(Add_Task.this, "Please enter name task", Toast.LENGTH_LONG).show();
         } else {
             sendNotification();
-            taskRef.setValue(new Task(taskRef.getKey(), nameTask.getText().toString(), false, timeStart, DateEnd.getText().toString() + " " + TimeEnd.getText().toString(), DateRemind.getText().toString() + " " + TimeRemind.getText().toString()));
+            Task task = new Task(taskRef.getKey(), nameTask.getText().toString(), false, timeStart, DateEnd.getText().toString() + " " + TimeEnd.getText().toString(), DateRemind.getText().toString() + " " + TimeRemind.getText().toString());
+            taskRef.setValue(task);
+            runServices(task);
 
         }
     }
@@ -151,7 +160,7 @@ public class Add_Task extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 calendar.set(year,month,dayOfMonth);
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
                 textView.setText(simpleDateFormat.format(calendar.getTime()));
             }
         },year,month,day);
@@ -172,4 +181,82 @@ public class Add_Task extends AppCompatActivity {
         },hour,minute,true);
         timePickerDialog.show();
     }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void runServices(Task task){
+
+//        List<Task> tasks = new ArrayList<>();
+
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        Log.e("run","vô services");
+        final Intent intent = new Intent(Add_Task.this,BroadRececiver.class);
+        String strDate = task.getRemind();
+        Date dateTask = null;
+        try {
+            dateTask = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").parse(strDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+      //  intent.putExtra("listGroupId",(Serializable) listGroupId);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(Add_Task.this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        assert dateTask != null;
+       // alarmManager.add(AlarmManager.RTC_WAKEUP,dateTask.getTime(),pendingIntent);
+//
+//        for (String groupId: listGroupId) {
+//            FirebaseDatabase database = FirebaseDatabase.getInstance();
+//            DatabaseReference myRef = database.getReference("Group").child(groupId).child("task");
+//            myRef.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    try {
+//                        dateNow = Calendar.getInstance().getTime();
+//
+//                        assert dateNow != null;
+//
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                    for (DataSnapshot snapshot1: snapshot.getChildren()) {
+//                        Task task = snapshot1.getValue(Task.class);
+//                        if(!task.isCheck()){
+//                            assert task != null;
+//                            String sDate=task.getRemind();
+//                            Date dateTask = null;
+//                            try {
+//                                dateTask = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").parse(sDate);
+//                            } catch (ParseException e) {
+//                                e.printStackTrace();
+//                            }
+//                            assert dateTask != null;
+//                            if(dateNow.toInstant().isBefore(dateTask.toInstant())){
+//                                tasks.add(task);
+//                                Log.e("fdsfsad",tasks.size()+"");
+//
+//                            }
+//                        }
+//                    }
+//                    for (Task task: tasks) {
+//                        Log.e("sdffsd","vô services");
+//                        final Intent intent = new Intent(getContext(),BroadRececiver.class);
+//                        String strDate = task.getRemind();
+//                        Date dateTask = null;
+//                        try {
+//                            dateTask = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").parse(strDate);
+//                        } catch (ParseException e) {
+//                            e.printStackTrace();
+//                        }
+//                        intent.putExtra("listGroupId",(Serializable) listGroupId);
+//                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+//                        assert dateTask != null;
+//                        alarmManager.set(AlarmManager.RTC_WAKEUP,dateTask.getTime(),pendingIntent);
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//                }
+//            });
+
+
+        }
+
 }
