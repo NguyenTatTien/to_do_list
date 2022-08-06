@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#EFEEEE"
-    tools:context=".Today_Task_Fragment">
+    tools:context=".fragment.Today_Task_Fragment">
 
    <RelativeLayout
        android:layout_width="match_parent"
@@ -21,16 +21,42 @@
                android:textColor="@color/black"
                android:textStyle="bold"
                android:text="Today's task"></TextView>
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:textSize="20dp"
+               android:layout_margin="20dp"
 
-               <ListView
-                   android:id="@+id/list_task_today"
+               android:textColor="@color/black"
+               android:textStyle="bold"
+               android:text="Personal"></TextView>
+               <androidx.recyclerview.widget.RecyclerView
+                   android:id="@+id/list_personal_today"
                    android:layout_width="match_parent"
                    android:dividerHeight="0dp"
                    android:divider="@null"
-                   android:layout_height="match_parent"
-                   android:layout_margin="20dp"></ListView>
+                   android:layout_height="220dp"
+                   android:layout_margin="20dp"></androidx.recyclerview.widget.RecyclerView>
+
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:textSize="20dp"
+               android:layout_margin="20dp"
+
+               android:textColor="@color/black"
+               android:textStyle="bold"
+               android:text="Group"></TextView>
+           <androidx.recyclerview.widget.RecyclerView
+               android:id="@+id/list_group_today"
+               android:layout_width="match_parent"
+               android:dividerHeight="0dp"
+               android:divider="@null"
+               android:layout_height="match_parent"
+               android:layout_margin="20dp"></androidx.recyclerview.widget.RecyclerView>
 
        </LinearLayout>
+
         <ImageButton
             android:src="@drawable/ic_white_add_24"
             android:layout_width="wrap_content"

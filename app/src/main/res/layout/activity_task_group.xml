@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Task_Group">
+    tools:context=".activity.Task_Group">
    <LinearLayout
        android:layout_width="match_parent"
        android:orientation="vertical"
@@ -54,13 +54,13 @@
            android:textSize="18dp"
            android:textStyle="bold"
            android:layout_marginLeft="25dp"></TextView>
-       <ListView
+       <androidx.recyclerview.widget.RecyclerView
            android:id="@+id/list_task_group"
            android:layout_marginTop="20dp"
+           android:layout_marginLeft="20dp"
+           android:layout_marginRight="20dp"
            android:layout_width="match_parent"
-           android:dividerHeight="0dp"
-           android:divider="@null"
-           android:layout_height="match_parent"></ListView>
+           android:layout_height="match_parent"/>
    </LinearLayout>
     <ImageButton
         android:id="@+id/add_task_group"

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#EFEEEE"
-    tools:context=".Personal_Task_Fragment">
+    tools:context=".fragment.Personal_Task_Fragment">
 
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
@@ -23,13 +23,13 @@
                 android:textStyle="bold"
                 android:text="Personal's task"></TextView>
 
-            <ListView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list_task_personal"
                 android:layout_width="match_parent"
                 android:dividerHeight="0dp"
                 android:divider="@null"
                 android:layout_height="match_parent"
-                android:layout_margin="20dp"></ListView>
+                android:layout_margin="20dp"></androidx.recyclerview.widget.RecyclerView>
 
         </LinearLayout>
         <ImageButton
